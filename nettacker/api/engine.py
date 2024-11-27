@@ -510,29 +510,29 @@ def start_api_subprocess(options):
     use_ssl = os.getenv("API_USE_SSL", "False").lower() == "true"
     try:
         if use_ssl:
-        if options.api_cert and options.api_cert_key:
-            app.run(
-                host=options.api_hostname,
-                port=options.api_port,
-                debug=options.api_debug_mode,
-                ssl_context=(options.api_cert, options.api_cert_key),
-                threaded=True,
-            )
+            if options.api_cert and options.api_cert_key:
+                app.run(
+                    host=options.api_hostname,
+                    port=options.api_port,
+                    debug=options.api_debug_mode,
+                    ssl_context=(options.api_cert, options.api_cert_key),
+                    threaded=True,
+                )
+            else:
+                app.run(
+                    host=options.api_hostname,
+                    port=options.api_port,
+                    debug=options.api_debug_mode,
+                    ssl_context="adhoc",
+                    threaded=True,
+                )
         else:
             app.run(
                 host=options.api_hostname,
                 port=options.api_port,
                 debug=options.api_debug_mode,
-                ssl_context="adhoc",
                 threaded=True,
             )
-    else:
-        app.run(
-            host=options.api_hostname,
-            port=options.api_port,
-            debug=options.api_debug_mode,
-            threaded=True,
-        )
     except Exception as e:
         die_failure(str(e))
 
